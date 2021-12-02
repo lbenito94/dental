@@ -1,6 +1,5 @@
 package com.dental.controller;
 
-import com.dental.model.Paciente;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.dental.model.Paciente;
 import com.dental.repository.PacienteRepository;
 
 @Controller
@@ -22,7 +22,7 @@ public class PacienteController {
     private PacienteRepository pacienteRepository;
 
     @GetMapping("")
-    public String home(Model model) {
+    public String homePaciente(Model model) {
         model.addAttribute("pacientes",pacienteRepository.findAll());
         return "/paciente/listarPaciente";
     }
