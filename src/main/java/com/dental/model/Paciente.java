@@ -1,4 +1,4 @@
-package com.example.dental.model;
+package com.dental.model;
 
 import javax.persistence.*;
 
@@ -9,8 +9,8 @@ public class Paciente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idpacientes")
     private Integer id;
-    @Column(name = "Tipo_Documento", nullable = false)
-    private Integer tdoc;
+    @Column(name = "Tipo_Documento", nullable = false, length = 15)
+    private String tdoc;
     @Column(name = "Numero_Documento", nullable = false, length = 15)
     private String ndoc;
     @Column(name = "Nombres", nullable = false, length = 45)
@@ -37,7 +37,7 @@ public class Paciente {
     public Paciente() {
     }
 
-    public Paciente(Integer id, Integer tdoc, String ndoc, String nom, String apat, String amat, String fnac, Integer sex, String ecivil, String email, String ntel, String ncel, String dir) {
+    public Paciente(Integer id, String tdoc, String ndoc, String nom, String apat, String amat, String fnac, Integer sex, String ecivil, String email, String ntel, String ncel, String dir) {
         this.id = id;
         this.tdoc = tdoc;
         this.ndoc = ndoc;
@@ -61,11 +61,11 @@ public class Paciente {
         this.id = id;
     }
 
-    public Integer getTdoc() {
+    public String getTdoc() {
         return tdoc;
     }
 
-    public void setTdoc(Integer tdoc) {
+    public void setTdoc(String tdoc) {
         this.tdoc = tdoc;
     }
 

@@ -1,4 +1,4 @@
-package com.example.dental.api;
+package com.dental.api;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
