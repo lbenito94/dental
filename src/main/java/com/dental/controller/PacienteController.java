@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -23,18 +24,34 @@ public class PacienteController {
     @GetMapping("")
     public String home(Model model) {
         model.addAttribute("pacientes",pacienteRepository.findAll());
-        return "home";
+        return "/paciente/listarPaciente";
     }
 
     @GetMapping("/create")
     public String createPaciente() {
-        return "crearPaciente";
+        return "/paciente/crearPaciente";
     }
 
     @PostMapping("/save")
     public String save(Paciente paciente){
-        logg.info("Informacion del objeto Paciente, {}", paciente);
+        logg.info("LOGG SAVE -> Objeto Nuevo Paciente, {}", paciente);
         pacienteRepository.save(paciente);
+        return "redirect:/pacientes";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable Integer id, Model model){
+        Paciente p = pacienteRepository.getById(id);
+        logg.info("LOGG EDIT ID -> Objeto recuperado {}", p);
+        model.addAttribute("pacientes",p);
+        return "/paciente/editarPaciente";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id){
+        Paciente p = pacienteRepository.getById(id);
+        logg.info("LOGG DELETE ID -> Objeto Eliminado {}", p);
+        pacienteRepository.delete(p);
         return "redirect:/pacientes";
     }
 }
