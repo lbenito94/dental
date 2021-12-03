@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Doctor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h1>Crear Doctor</h1>
+
+    <form th:action="@{/doctores/save}" method="post">
+
+    <div class="mb-3">
+        <label for="formGroupExampleInput" class="form-label">Tipo Documento</label>
+        <input type="text" class="form-control" id="formGroupExampleInput" name = "tdoc" placeholder="Escriba el tipo de documento">
+    </div>
+    <div class="mb-3">
+        <label for="formGroupExampleInput" class="form-label">Numero Documento</label>
+        <input type="text" class="form-control" id="formGroupExampleInput1" name = "ndoc" placeholder="Escriba el numero de documento">
+    </div>
+    <div class="mb-3">
+        <label for="formGroupExampleInput" class="form-label">Apellido Paterno</label>
+        <input type="text" class="form-control" id="formGroupExampleInput2" name = "apat" placeholder="Escriba el apellido paterno">
+    </div>
+    <div class="mb-3">
+        <label for="formGroupExampleInput" class="form-label">Apellido Materno</label>
+        <input type="text" class="form-control" id="formGroupExampleInput3" name = "amat" placeholder="Escriba el apellido materno">
+    </div>
+    <div class="mb-3">
+        <label for="formGroupExampleInput" class="form-label">Nombres</label>
+        <input type="text" class="form-control" id="formGroupExampleInput4" name = "nom" placeholder="Escriba el nombre">
+    </div>
+    <div class="mb-3">
+        <label for="formGroupExampleInput" class="form-label">CEOP</label>
+        <input type="text" class="form-control" id="formGroupExampleInput5" name = "ncol" placeholder="Escriba CEOP">
+    </div>
+    <div class="mb-3">
+        <label for="formGroupExampleInput" class="form-label">Especialidad</label>
+        <input type="text" class="form-control" id="formGroupExampleInput6" name = "idesp" placeholder="Escriba especialidad">
+    </div>
+
+        <button type="submit" class="btn btn-success">Guardar</button>
+    </form>
+</div>
+
+</body>
+</html>

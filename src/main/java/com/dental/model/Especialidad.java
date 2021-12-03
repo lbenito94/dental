@@ -13,12 +13,12 @@ public class Especialidad {
     @Column(name = "descripcion", nullable = false, length = 50)
     private String des;
 
+    public Especialidad() {
+    }
+
     public Especialidad(Integer id, String des) {
         this.id = id;
         this.des = des;
-    }
-
-    public Especialidad() {
     }
 
     public Integer getId() {

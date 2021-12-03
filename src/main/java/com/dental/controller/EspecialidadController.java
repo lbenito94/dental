@@ -54,5 +54,4 @@ public class EspecialidadController {
         especialidadRepository.delete(p);
         return "redirect:/especialidades";
     }
-
 }
