@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="plantilla/template :: head">
+</head>
+<body>
+<header th:replace="plantilla/template :: header"></header>
+
+<div class="container">
+
+    <div class="card bg-light">
+        <div class="card-header bg-dark text-white" th:text="${titulo}"></div>
+        <div class="card-body">
+
+            <form th:action="@{/views/pacientes/save}" th:object="${paciente}" method="post">
+                <div class="form-group row">
+
+                    <input type="hidden" th:field="*{id}">
+                    <label class="col-md-2" for="tipodocumento">Tipo de documento:</label>
+                    <input type="text" th:field="*{tipodocumento}" class="form-control form-control-sm col-md-6" id="tipodocumento"
+                           placeholder="Tipo de documento">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('tipodocumento')}"
+                           th:errors="*{tipodocumento}">
+                    </small>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-2" for="numerodocumento">Numero de documento:</label>
+                    <input type="text" th:field="*{numerodocumento}" class="form-control form-control-sm col-md-6" id="numerodocumento"
+                           placeholder="Numero de documento">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('numerodocumento')}"
+                           th:errors="*{numerodocumento}">
+                    </small>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-2" for="nombres">Nombres:</label>
+                    <input type="text" th:field="*{nombres}" class="form-control form-control-sm col-md-6" id="nombres"
+                           placeholder="Nombres del paciente">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('nombres')}"
+                           th:errors="*{nombres}">
+                    </small>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-2" for="apellidopaterno">Apellidos Paterno:</label>
+                    <input type="text" th:field="*{apellidopaterno}" class="form-control form-control-sm col-md-6" id="apellidopaterno"
+                           placeholder="Apellido Paterno del paciente">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('apellidopaterno')}"
+                           th:errors="*{apellidopaterno}">
+                    </small>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-2" for="apellidomaterno">Apellido Materno:</label>
+                    <input type="text" th:field="*{apellidomaterno}" class="form-control form-control-sm col-md-6" id="apellidomaterno"
+                           placeholder="Apellido Materno del paciente">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('apellidomaterno')}"
+                           th:errors="*{apellidomaterno}">
+                    </small>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-2" for="fechanacimiento">Fecha de Nacimento:</label>
+                    <input type="text"  th:field="*{fechanacimiento}" class="form-control form-control-sm col-md-6" id="fechanacimiento"
+                           placeholder="Fecha de Nacimiento">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('fechanacimiento')}"
+                           th:errors="*{fechanacimiento}">
+                    </small>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-2" for="sexo">Sexo:</label>
+                    <input type="text"  th:field="*{sexo}" class="form-control form-control-sm col-md-6" id="sexo"
+                           placeholder="Sexo">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('sexo')}"
+                           th:errors="*{sexo}">
+                    </small>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-2" for="estadocivil">Estado Civil:</label>
+                    <input type="text"  th:field="*{estadocivil}" class="form-control form-control-sm col-md-6" id="estadocivil"
+                           placeholder="Estado Civil">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('estadocivil')}"
+                           th:errors="*{estadocivil}">
+                    </small>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2" for="email">Email:</label>
+                    <input type="text"  th:field="*{email}" class="form-control form-control-sm col-md-6" id="email"
+                           placeholder="Email">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('email')}"
+                           th:errors="*{email}">
+                    </small>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2" for="numerocelular">Numero Celular:</label>
+                    <input type="text"  th:field="*{numerocelular}" class="form-control form-control-sm col-md-6" id="numerocelular"
+                           placeholder="Numero Celular">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('numerocelular')}"
+                           th:errors="*{numerocelular}">
+                    </small>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2" for="numerotelefono">Numero Telefono:</label>
+                    <input type="text"  th:field="*{numerotelefono}" class="form-control form-control-sm col-md-6" id="numerotelefono"
+                           placeholder="Numero Telefono">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('numerotelefono')}"
+                           th:errors="*{numerotelefono}">
+                    </small>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-2" for="direccion">Dirección:</label>
+                    <input type="text"  th:field="*{direccion}" class="form-control form-control-sm col-md-6" id="direccion"
+                           placeholder="Direccion">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('direccion')}"
+                           th:errors="*{direccion}">
+                    </small>
+                </div>
+
+  <!--              <div class="form-group row">
+                    <label class="col-md-2" for="espdes">Especialidad:</label>
+                    <select th:field="*{especialidad}" class="form-control form-control-sm col-md-6" id="espdes">
+                        <option th:each="especialidad:${especialidades}"
+                                th:value="${especialidad.id}"
+                                th:text="${especialidad.espdes}"
+                        />
+                    </select>
+                </div>-->
+
+                <div class="card-footer bg-dark">
+                    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<footer th:replace="plantilla/template :: footer"></footer>
+
+</body>
+</html>

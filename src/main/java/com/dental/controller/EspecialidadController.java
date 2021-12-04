@@ -1,57 +1,111 @@
 package com.dental.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.validation.Valid;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.dental.model.Especialidad;
-import com.dental.repository.EspecialidadRepository;
+import com.dental.models.entity.Especialidad;
+import com.dental.models.service.IEspecialidadService;
 
 @Controller
-@RequestMapping("/especialidades")   // https://localhost:8080/especialidades
+@RequestMapping("/views/especialidades")
 public class EspecialidadController {
 
-    private final Logger logg = LoggerFactory.getLogger(Especialidad.class);
     @Autowired
-    private EspecialidadRepository especialidadRepository;
+    private IEspecialidadService especialidadService;
 
-    @GetMapping("")
-    public String homeEspecialidad(Model model) {
-        model.addAttribute("especialidades",especialidadRepository.findAll());
-        return "/especialidad/listarEspecialidad";
+    @GetMapping("/")
+    public String listarEspecialidades(Model model) {
+        List<Especialidad> listadoEspecialidades = especialidadService.listarTodos();
+
+        model.addAttribute("titulo", "Lista de Especialidades");
+        model.addAttribute("especialidades", listadoEspecialidades);
+
+        return "/views/especialidades/listar";
     }
 
     @GetMapping("/create")
-    public String createEspecialidad() {
-        return "/especialidad/crearEspecialidad";
+    public String crear(Model model) {
+
+        Especialidad especialidad = new Especialidad();
+
+        model.addAttribute("titulo", "Formulario: Nueva Especialidad");
+        model.addAttribute("especialidad", especialidad);
+
+        return "/views/especialidades/frmCrear";
     }
 
     @PostMapping("/save")
-    public String save(Especialidad especialidad){
-        logg.info("LOGG SAVE -> Objeto Nueva Especialidad, {}", especialidad);
-        especialidadRepository.save(especialidad);
-        return "redirect:/especialidades";
+    public String guardar(@Valid @ModelAttribute Especialidad especialidad, BindingResult result,
+                          Model model, RedirectAttributes attribute) {
+        /*   List<Especialidad> listEspecialidades = especialidadService.listaEspecialidades();*/
+
+        if (result.hasErrors()) {
+            model.addAttribute("titulo", "Formulario: Nueva Especialidad");
+            model.addAttribute("especialidad", especialidad);
+            System.out.println("Existieron errores en el formulario");
+            return "/views/especialidades/frmCrear";
+        }
+
+        especialidadService.guardar(especialidad);
+        System.out.println("Especialidad guardado con exito!");
+        attribute.addFlashAttribute("success", "Especialidad guardada con exito!");
+        return "redirect:/views/especialidades/";
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable Integer id, Model model){
-        Especialidad p = especialidadRepository.getById(id);
-        logg.info("LOGG EDIT ID -> Objeto recuperado {}", p);
-        model.addAttribute("especialidades",p);
-        return "/especialidad/editarEspecialidad";
+    public String editar(@PathVariable("id") Long idEspecialidad, Model model, RedirectAttributes attribute) {
+
+        Especialidad especialidad = null;
+
+        if (idEspecialidad > 0) {
+            especialidad = especialidadService.buscarPorId(idEspecialidad);
+
+            if (especialidad == null) {
+                System.out.println("Error: El ID del especialidad no existe!");
+                attribute.addFlashAttribute("error", "ATENCION: El ID de la especialidad no existe!");
+                return "redirect:/views/especialidades/";
+            }
+        }else {
+            System.out.println("Error: Error con el ID del Especialidad");
+            attribute.addFlashAttribute("error", "ATENCION: Error con el ID de la especialidad");
+            return "redirect:/views/especialidades/";
+        }
+
+        model.addAttribute("titulo", "Formulario: Editar Especialidad");
+        model.addAttribute("especialidad", especialidad);
+        return "/views/especialidades/frmCrear";
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id){
-        Especialidad p = especialidadRepository.getById(id);
-        logg.info("LOGG DELETE ID -> Objeto Eliminado {}", p);
-        especialidadRepository.delete(p);
-        return "redirect:/especialidades";
+    public String eliminar(@PathVariable("id") Long idEspecialidad, RedirectAttributes attribute) {
+
+        Especialidad especialidad = null;
+
+        if (idEspecialidad > 0) {
+            especialidad = especialidadService.buscarPorId(idEspecialidad);
+
+            if (especialidad == null) {
+                System.out.println("Error: El ID del especialidad no existe!");
+                attribute.addFlashAttribute("error", "ATENCION: El ID de la especialidad no existe!");
+                return "redirect:/views/especialidades/";
+            }
+        }else {
+            System.out.println("Error: Error con el ID del Especialidad");
+            attribute.addFlashAttribute("error", "ATENCION: Error con el ID de la  Especialidad!");
+            return "redirect:/views/especialidades/";
+        }
+
+        especialidadService.eliminar(idEspecialidad);
+        System.out.println("Registro Eliminado con Exito!");
+        attribute.addFlashAttribute("warning", "Registro Eliminado con Exito!");
+
+        return "redirect:/views/especialidades/";
     }
+
 }

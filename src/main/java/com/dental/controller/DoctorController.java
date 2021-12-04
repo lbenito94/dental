@@ -1,57 +1,123 @@
 package com.dental.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.dental.model.Doctor;
-import com.dental.repository.DoctorRepository;
+import com.dental.models.entity.Especialidad;
+import com.dental.models.entity.Doctor;
+import com.dental.models.service.IEspecialidadService;
+import com.dental.models.service.IDoctorService;
 
 @Controller
-@RequestMapping("/doctores")   // https://localhost:8080/doctores
+@RequestMapping("/views/doctores")
 public class DoctorController {
 
-    private final Logger logg = LoggerFactory.getLogger(Doctor.class);
     @Autowired
-    private DoctorRepository doctorRepository;
+    private IDoctorService doctorService;
 
-    @GetMapping("")
-    public String homeDoctor(Model model) {
-        model.addAttribute("doctores",doctorRepository.findAll());
-        return "/doctor/listarDoctor";
+    @Autowired
+    private IEspecialidadService especialidadService;
+
+    @GetMapping("/")
+    public String listarDoctores(Model model) {
+        List<Doctor> listadoDoctores = doctorService.listarTodos();
+
+        model.addAttribute("titulo", "Lista de Doctores");
+        model.addAttribute("doctores", listadoDoctores);
+
+        return "/views/doctores/listar";
     }
 
     @GetMapping("/create")
-    public String createDoctor() {
-        return "/doctor/crearDoctor";
+    public String crear(Model model) {
+
+        Doctor doctor = new Doctor();
+        List<Especialidad> listEspecialidades = especialidadService.listaEspecialidades(); // aca 1
+
+        model.addAttribute("titulo", "Formulario: Nuevo Doctor");
+        model.addAttribute("doctor", doctor);
+        model.addAttribute("especialidades", listEspecialidades);
+
+        return "/views/doctores/frmCrear";
     }
 
     @PostMapping("/save")
-    public String save(Doctor doctor){
-        logg.info("LOGG SAVE -> Objeto Nuevo Doctor, {}", doctor);
-        doctorRepository.save(doctor);
-        return "redirect:/doctores";
+    public String guardar(@Valid @ModelAttribute Doctor doctor, BindingResult result,
+                          Model model, RedirectAttributes attribute) {
+        List<Especialidad> listEspecialidades = especialidadService.listaEspecialidades(); // aca 2
+
+        if (result.hasErrors()) {
+            model.addAttribute("titulo", "Formulario: Nuevo Doctor");
+            model.addAttribute("doctor", doctor);
+            model.addAttribute("especialidades", listEspecialidades);
+            System.out.println("Existieron errores en el formulario");
+            return "/views/doctores/frmCrear";
+        }
+
+        doctorService.guardar(doctor);
+        System.out.println("Doctor guardado con exito!");
+        attribute.addFlashAttribute("success", "Doctor guardado con exito!");
+        return "redirect:/views/doctores/";
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable Integer id, Model model){
-        Doctor p = doctorRepository.getById(id);
-        logg.info("LOGG EDIT ID -> Objeto recuperado {}", p);
-        model.addAttribute("doctores",p);
-        return "/doctor/editarDoctor";
+    public String editar(@PathVariable("id") Long idDoctor, Model model, RedirectAttributes attribute) {
+
+        Doctor doctor = null;
+
+        if (idDoctor > 0) {
+            doctor = doctorService.buscarPorId(idDoctor);
+
+            if (doctor == null) {
+                System.out.println("Error: El ID del doctor no existe!");
+                attribute.addFlashAttribute("error", "ATENCION: El ID del doctor no existe!");
+                return "redirect:/views/doctores/";
+            }
+        }else {
+            System.out.println("Error: Error con el ID del Doctor");
+            attribute.addFlashAttribute("error", "ATENCION: Error con el ID del doctor");
+            return "redirect:/views/doctores/";
+        }
+
+        List<Especialidad> listEspecialidades = especialidadService.listaEspecialidades(); //aca 3
+
+        model.addAttribute("titulo", "Formulario: Editar Doctor");
+        model.addAttribute("doctor", doctor);
+        model.addAttribute("especialidades", listEspecialidades);
+
+        return "/views/doctores/frmCrear";
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id){
-        Doctor p = doctorRepository.getById(id);
-        logg.info("LOGG DELETE ID -> Objeto Eliminado {}", p);
-        doctorRepository.delete(p);
-        return "redirect:/doctores";
+    public String eliminar(@PathVariable("id") Long idDoctor, RedirectAttributes attribute) {
+
+        Doctor doctor = null;
+
+        if (idDoctor > 0) {
+            doctor = doctorService.buscarPorId(idDoctor);
+
+            if (doctor == null) {
+                System.out.println("Error: El ID del doctor no existe!");
+                attribute.addFlashAttribute("error", "ATENCION: El ID del doctor no existe!");
+                return "redirect:/views/doctores/";
+            }
+        }else {
+            System.out.println("Error: Error con el ID del Doctor");
+            attribute.addFlashAttribute("error", "ATENCION: Error con el ID del Doctor!");
+            return "redirect:/views/doctores/";
+        }
+
+        doctorService.eliminar(idDoctor);
+        System.out.println("Registro Eliminado con Exito!");
+        attribute.addFlashAttribute("warning", "Registro Eliminado con Exito!");
+
+        return "redirect:/views/doctores/";
     }
+
 }

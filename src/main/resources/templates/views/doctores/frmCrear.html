@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="plantilla/template :: head">
+</head>
+<body>
+<header th:replace="plantilla/template :: header"></header>
+
+<div class="container">
+
+    <div class="card bg-light">
+        <div class="card-header bg-dark text-white" th:text="${titulo}"></div>
+        <div class="card-body">
+
+            <form th:action="@{/views/doctores/save}" th:object="${doctor}" method="post">
+                <div class="form-group row">
+
+                    <input type="hidden" th:field="*{id}">
+                    <label class="col-md-2" for="tipodocumento">Tipo de documento:</label>
+                    <input type="text" th:field="*{tipodocumento}" class="form-control form-control-sm col-md-6" id="tipodocumento"
+                           placeholder="Tipo de documento">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('tipodocumento')}"
+                           th:errors="*{tipodocumento}">
+                    </small>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-2" for="numerodocumento">Numero de documento:</label>
+                    <input type="text" th:field="*{numerodocumento}" class="form-control form-control-sm col-md-6" id="numerodocumento"
+                           placeholder="Numero de documento">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('numerodocumento')}"
+                           th:errors="*{numerodocumento}">
+                    </small>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-2" for="nombres">Nombres:</label>
+                    <input type="text" th:field="*{nombres}" class="form-control form-control-sm col-md-6" id="nombres"
+                           placeholder="Nombres">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('nombres')}"
+                           th:errors="*{nombres}">
+                    </small>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-2" for="apellidopaterno">Apellidos Paterno:</label>
+                    <input type="text" th:field="*{apellidopaterno}" class="form-control form-control-sm col-md-6" id="apellidopaterno"
+                           placeholder="Apellido Paterno del doctor">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('apellidopaterno')}"
+                           th:errors="*{apellidopaterno}">
+                    </small>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-2" for="apellidomaterno">Apellido Materno:</label>
+                    <input type="text" th:field="*{apellidomaterno}" class="form-control form-control-sm col-md-6" id="apellidomaterno"
+                           placeholder="Apellido Materno del doctor">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('apellidomaterno')}"
+                           th:errors="*{apellidomaterno}">
+                    </small>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-2" for="colegiatura">Numero Colegiatura (CEOP):</label>
+                    <input type="text"  th:field="*{colegiatura}" class="form-control form-control-sm col-md-6" id="colegiatura"
+                           placeholder="Colegiatura del doctor">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('colegiatura')}"
+                           th:errors="*{colegiatura}">
+                    </small>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-2" for="espdes">Especialidad:</label>
+                    <select th:field="*{especialidad}" class="form-control form-control-sm col-md-6" id="espdes">
+                        <option th:each="especialidad:${especialidades}"
+                                th:value="${especialidad.id}"
+                                th:text="${especialidad.espdes}"
+                        />
+                    </select>
+                </div>
+
+                <div class="card-footer bg-dark">
+                    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<footer th:replace="plantilla/template :: footer"></footer>
+
+</body>
+</html>

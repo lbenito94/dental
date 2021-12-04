@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="plantilla/template :: head">
+</head>
+<body>
+<header th:replace="plantilla/template :: header"></header>
+
+<div class="container">
+
+    <div class="card bg-light">
+        <div class="card-header bg-dark text-white" th:text="${titulo}"></div>
+        <div class="card-body">
+
+            <form th:action="@{/views/usuarios/save}" th:object="${usuario}" method="post">
+                <div class="form-group row">
+
+                    <input type="hidden" th:field="*{id}">
+                    <label class="col-md-2" for="nombres">Nombres:</label>
+                    <input type="text" th:field="*{nombres}" class="form-control form-control-sm col-md-6" id="nombres"
+                           placeholder="Nombres del usuario">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('nombres')}"
+                           th:errors="*{nombres}">
+                    </small>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-2" for="apellidopaterno">Apellidos Paterno:</label>
+                    <input type="text" th:field="*{apellidopaterno}" class="form-control form-control-sm col-md-6" id="apellidopaterno"
+                           placeholder="Apellido Paterno del usuario">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('apellidopaterno')}"
+                           th:errors="*{apellidopaterno}">
+                    </small>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-2" for="apellidomaterno">Apellido Materno:</label>
+                    <input type="text" th:field="*{apellidomaterno}" class="form-control form-control-sm col-md-6" id="apellidomaterno"
+                           placeholder="Apellido Materno del usuario">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('apellidomaterno')}"
+                           th:errors="*{apellidomaterno}">
+                    </small>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-2" for="nombreusuario">Usuario</label>
+                    <input type="text"  th:field="*{nombreusuario}" class="form-control form-control-sm col-md-6" id="nombreusuario"
+                           placeholder="Usuario">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('nombreusuario')}"
+                           th:errors="*{nombreusuario}">
+                    </small>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-2" for="contrasenia">Password:</label>
+                    <input type="text" th:field="*{contrasenia}" class="form-control form-control-sm col-md-6" id="contrasenia"
+                           placeholder="Password del usuario">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('contrasenia')}"
+                           th:errors="*{contrasenia}">
+                    </small>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-2" for="roldes">Rol:</label>
+                    <select th:field="*{rol}" class="form-control form-control-sm col-md-6" id="roldes">
+                        <option th:each="rol:${roles}"
+                                th:value="${rol.id}"
+                                th:text="${rol.roldes}"
+                        />
+                    </select>
+                </div>
+
+                <div class="card-footer bg-dark">
+                    <input type="submit" class="btn btn-primary btn-sm" value="Guardar">
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<footer th:replace="plantilla/template :: footer"></footer>
+
+</body>
+</html>
