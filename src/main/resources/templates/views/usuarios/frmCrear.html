@@ -52,7 +52,7 @@
 
                 <div class="form-group row">
                     <label class="col-md-2" for="contrasenia">Password:</label>
-                    <input type="text" th:field="*{contrasenia}" class="form-control form-control-sm col-md-6" id="contrasenia"
+                    <input type="password" th:field="*{contrasenia}" class="form-control form-control-sm col-md-6" id="contrasenia"
                            placeholder="Password del usuario">
                     <small class="form-text text-danger" th:if="${#fields.hasErrors('contrasenia')}"
                            th:errors="*{contrasenia}">
