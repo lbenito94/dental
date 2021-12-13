@@ -10,6 +10,6 @@ public class usuarios {
 	
 	@RequestMapping(value="hola",method=RequestMethod.GET)
 	public String HolaMundo() {
-		return "Hola Mundo";
+		return "Hola";
 	}
 }
